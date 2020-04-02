@@ -1,0 +1,61 @@
+version: '2'
+
+services:
+  database:
+    image: mysql:5.7
+    command: ['--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: app
+      MYSQL_USER: user
+      MYSQL_PASSWORD: pwd
+    stdin_open: true
+    tty: true
+
+  app:
+    build:
+      context: .
+    environment:
+      CI_ENVIRONMENT: development
+      BASE_URL: http://localhost:8080
+      MYSQL_HOST: database
+      MYSQL_DATABASE: app
+      MYSQL_USER: user
+      MYSQL_PASSWORD: pwd
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./:/usr/src/app
+    ports:
+      - 9000:9000
+    depends_on:
+      - database
+    links:
+      - database
+
+  nginx:
+    image: happymonkey/nginx-php
+    stdin_open: true
+    tty: true
+    volumes_from:
+      - app
+    ports:
+      - 8080:80
+    depends_on:
+      - app
+    links:
+      - app
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    environment:
+      PMA_ARBITRARY: 1
+      PMA_HOST: database
+    ports:
+      - 8001:80
+    volumes:
+      - /sessions
+    depends_on:
+      - database
+    links:
+      - database

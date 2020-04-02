@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Fix chmod file
+find $PROJECT_DIR -type d -exec chmod 0775 '{}' \;
+
+# Expend secrets
+source /usr/local/bin/env_secrets_expand
+
+# Prepare env file
+envsubst < /usr/src/app/env > /usr/src/app/.env
+
+exec "$@"

@@ -1,0 +1,61 @@
+kind: pipeline
+name: "Build Project"
+
+steps:
+  - name: assets
+    pull: always
+    image: registry.hub.docker.com/happymonkey/node-sass:latest
+    commands:
+      - yarn install
+      - sass --load-path=public/vendor --style=compressed public/assets/scss/:public/assets/css/
+
+  - name: build-pprod
+    pull: always
+    image: docker
+    volumes:
+      - name: dockersock
+        path: /var/run/docker.sock
+    environment:
+      DOCKER_LOGIN:
+        from_secret: docker_login
+    commands:
+      - sleep 10
+      - mkdir ~/.docker
+      - echo $DOCKER_LOGIN > ~/.docker/config.json
+      - docker build -f Dockerfile -t happymonkey/template:pprod .
+      - docker push happymonkey/template:pprod
+    when:
+      branch:
+        include:
+          - release/pprod
+
+  - name: build-prod
+    pull: always
+    image: docker
+    volumes:
+      - name: dockersock
+        path: /var/run/docker.sock
+    environment:
+      DOCKER_LOGIN:
+        from_secret: docker_login
+    commands:
+      - sleep 10
+      - mkdir ~/.docker
+      - echo $DOCKER_LOGIN > ~/.docker/config.json
+      - docker build -f Dockerfile -t happymonkey/template .
+      - docker push happymonkey/template
+    when:
+      branch:
+        include:
+          - release/prod
+
+type: docker
+
+trigger:
+  branch:
+    - release/*
+
+volumes:
+  - name: dockersock
+    host:
+      path: /var/run/docker.sock

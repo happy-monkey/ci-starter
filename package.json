@@ -1,0 +1,13 @@
+{
+  "name": "ci-starter",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Happy Monkey <contact@happy-monkey.fr>",
+  "license": "MIT",
+  "dependencies": {
+    "@fortawesome/fontawesome-pro": "^5.13.0",
+    "@popperjs/core": "^2.1.1",
+    "bootstrap": "^4.4.1",
+    "jquery": "^3.4.1"
+  }
+}
