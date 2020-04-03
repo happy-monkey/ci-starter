@@ -5,9 +5,11 @@ COPY --from=composer /usr/bin/composer /usr/bin/composer
 # Start init scripts #
 COPY docker/env_secrets_expand /usr/local/bin/
 COPY docker/docker-php-entrypoint /usr/local/bin/
+COPY docker/init.sh /usr/local/bin/
 
 RUN chmod +x /usr/local/bin/env_secrets_expand
 RUN chmod +x /usr/local/bin/docker-php-entrypoint
+RUN chmod +x /usr/local/bin/init.sh
 # End init scripts #
 
 ENV PROJECT_DIR='/usr/src/app'

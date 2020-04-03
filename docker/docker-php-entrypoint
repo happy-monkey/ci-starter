@@ -7,6 +7,12 @@ find $PROJECT_DIR -type d -exec chmod 0775 '{}' \;
 source /usr/local/bin/env_secrets_expand
 
 # Prepare env file
-envsubst < /usr/src/app/env > /usr/src/app/.env
+envsubst < $PROJECT_DIR/env > $PROJECT_DIR/.env
+
+# Apply migrations
+$PROJECT_DIR/vendor/bin/phinx-migrations migrate
+
+# Custom init
+source /usr/local/bin/init.sh
 
 exec "$@"

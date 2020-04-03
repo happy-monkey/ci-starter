@@ -5,11 +5,14 @@ steps:
   - name: assets
     pull: always
     image: registry.hub.docker.com/happymonkey/node-sass:latest
+    environment:
+      FONTAWESOME_NPM_AUTH_TOKEN:
+        from_secret: fontawesome_npm_auth_token
     commands:
       - yarn install
       - sass --load-path=public/vendor --style=compressed public/assets/scss/:public/assets/css/
 
-  - name: build-pprod
+  - name: build
     pull: always
     image: docker
     volumes:
@@ -18,36 +21,18 @@ steps:
     environment:
       DOCKER_LOGIN:
         from_secret: docker_login
+      DOCKER_REPO: template
     commands:
       - sleep 10
       - mkdir ~/.docker
       - echo $DOCKER_LOGIN > ~/.docker/config.json
-      - docker build -f Dockerfile -t happymonkey/template:pprod .
-      - docker push happymonkey/template:pprod
+      - export TAG_NAME=$(echo $DRONE_REPO_BRANCH | cut -d'/' -f 2)
+      - docker build -f Dockerfile -t happymonkey/$DOCKER_REPO:$TAG_NAME .
+      - docker push happymonkey/$DOCKER_REPO:$TAG_NAME
     when:
       branch:
         include:
-          - release/pprod
-
-  - name: build-prod
-    pull: always
-    image: docker
-    volumes:
-      - name: dockersock
-        path: /var/run/docker.sock
-    environment:
-      DOCKER_LOGIN:
-        from_secret: docker_login
-    commands:
-      - sleep 10
-      - mkdir ~/.docker
-      - echo $DOCKER_LOGIN > ~/.docker/config.json
-      - docker build -f Dockerfile -t happymonkey/template .
-      - docker push happymonkey/template
-    when:
-      branch:
-        include:
-          - release/prod
+          - release/*
 
 type: docker
 
