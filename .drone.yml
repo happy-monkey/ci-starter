@@ -26,7 +26,7 @@ steps:
       - sleep 10
       - mkdir ~/.docker
       - echo $DOCKER_LOGIN > ~/.docker/config.json
-      - export TAG_NAME=$(echo $DRONE_REPO_BRANCH | cut -d'/' -f 2)
+      - export TAG_NAME=$(echo $DRONE_BRANCH | cut -d'/' -f 2)
       - docker build -f Dockerfile -t happymonkey/$DOCKER_REPO:$TAG_NAME .
       - docker push happymonkey/$DOCKER_REPO:$TAG_NAME
     when:
