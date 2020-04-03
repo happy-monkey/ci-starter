@@ -16,8 +16,8 @@ RUN chmod +x /usr/local/bin/init.sh
 ENV PROJECT_DIR='/usr/src/app'
 
 # Run composer
-COPY ./composer.json ./
-RUN composer install --optimize-autoloader
+COPY composer.json $PROJECT_DIR/composer.json
+RUN cd $PROJECT_DIR && composer install --optimize-autoloader && rm -rf /root/.composer
 
 # Copy files
 RUN mkdir -p $PROJECT_DIR
