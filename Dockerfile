@@ -16,11 +16,11 @@ RUN chmod +x /usr/local/bin/init.sh
 ENV PROJECT_DIR='/usr/src/app'
 
 # Run composer
+RUN mkdir -p $PROJECT_DIR
 COPY composer.json $PROJECT_DIR/composer.json
 RUN cd $PROJECT_DIR && composer install --optimize-autoloader && rm -rf /root/.composer
 
 # Copy files
-RUN mkdir -p $PROJECT_DIR
 COPY ./ $PROJECT_DIR
 RUN chown -R www-data:www-data $PROJECT_DIR
 
