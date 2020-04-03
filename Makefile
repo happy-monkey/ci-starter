@@ -34,13 +34,12 @@ build: prepare ## Build docker image from Dockerfile
 	docker-compose build
 
 up: prepare ## Run server from docker-compose.yml
-	docker-compose up --force-recreate -d
+	docker-compose up --force-recreate
 
 kill: ## Kill running server
 	docker stop `docker ps -a -q --filter name=${PROJECT_DIR}`
 
 # Project
-serve: yarn up ## Run server and open web browser
-	sleep 5 && open http://localhost:8080/
+run: yarn up ## Prepare assets and run server
 
-restart: kill serve ## Restart running server
+restart: kill run ## Restart running server
