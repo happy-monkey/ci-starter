@@ -3,6 +3,13 @@
 # Fix chmod file
 find $PROJECT_DIR -type d -exec chmod 0775 '{}' \;
 
+# Check writable folder
+WRITABLE_DIR=$PROJECT_DIR/writable
+if [ -z "$(ls -A $WRITABLE_DIR)" ]; then
+  cp -R vendor/codeigniter4/framework/writable/* $WRITABLE_DIR
+  chmod -R 0777 $WRITABLE_DIR
+fi
+
 # Expend secrets
 source /usr/local/bin/env_secrets_expand
 

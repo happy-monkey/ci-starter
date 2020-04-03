@@ -12,9 +12,14 @@ RUN chmod +x /usr/local/bin/docker-php-entrypoint
 RUN chmod +x /usr/local/bin/init.sh
 # End init scripts #
 
+# Start project build
 ENV PROJECT_DIR='/usr/src/app'
 
+# Run composer
+COPY ./composer.json ./
 RUN composer install --optimize-autoloader
+
+# Copy files
 RUN mkdir -p $PROJECT_DIR
 COPY ./ $PROJECT_DIR
 RUN chown -R www-data:www-data $PROJECT_DIR
