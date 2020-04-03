@@ -1,6 +1,16 @@
 version: '2'
 
 services:
+  sass:
+    image: happymonkey/node-sass:latest
+    working_dir: /usr/src/app
+    command: ['-c', 'sass --watch --load-path=public/vendor --style=compressed public/assets/scss/:public/assets/css']
+    volumes:
+      - ./:/usr/src/app
+    stdin_open: true
+    tty: true
+    entrypoint: /bin/sh
+
   database:
     image: mysql:5.7
     command: ['--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
