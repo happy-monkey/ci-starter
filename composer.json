@@ -12,7 +12,9 @@
         "ext-json": "*",
         "codeigniter4/framework": "^4",
         "codeigniter4/translations": "@rc",
-        "robmorgan/phinx": "^0.11.4"
+        "robmorgan/phinx": "^0.11.4",
+        "firebase/php-jwt": "^5.2",
+        "sngrl/php-firebase-cloud-messaging": "dev-master"
     },
     "require-dev": {
         "odan/phinx-migrations-generator": "^4.6"
