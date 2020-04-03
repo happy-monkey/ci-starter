@@ -14,6 +14,7 @@ RUN chmod +x /usr/local/bin/init.sh
 
 ENV PROJECT_DIR='/usr/src/app'
 
+RUN composer install --optimize-autoloader
 RUN mkdir -p $PROJECT_DIR
 COPY ./ $PROJECT_DIR
 RUN chown -R www-data:www-data $PROJECT_DIR
@@ -21,5 +22,4 @@ RUN chown -R www-data:www-data $PROJECT_DIR
 WORKDIR $PROJECT_DIR
 VOLUME $PROJECT_DIR
 
-RUN composer install --optimize-autoloader
 RUN chmod -R 0777 writable

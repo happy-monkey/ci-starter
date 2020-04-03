@@ -6,8 +6,8 @@
   "license": "MIT",
   "dependencies": {
     "@fortawesome/fontawesome-pro": "^5.13.0",
-    "@popperjs/core": "^2.1.1",
     "bootstrap": "^4.4.1",
-    "jquery": "^3.4.1"
+    "jquery": "^3.4.1",
+    "popper.js": "^1.16.0"
   }
 }
