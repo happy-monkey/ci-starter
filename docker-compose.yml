@@ -59,8 +59,9 @@ services:
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
     environment:
-      PMA_ARBITRARY: 1
       PMA_HOST: database
+      PMA_USER: user
+      PMA_PASSWORD: pwd
     ports:
       - 8001:80
     volumes:
