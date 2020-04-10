@@ -39,6 +39,9 @@ up: prepare ## Run server from docker-compose.yml
 kill: ## Kill running server
 	docker stop `docker ps -a -q --filter name=${PROJECT_DIR}`
 
+exec: ## Open shell into app container
+	docker exec -it ${CONTAINER_NAME} /bin/bash
+
 # Project
 run: yarn up ## Prepare assets and run server
 
