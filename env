@@ -21,6 +21,7 @@ CI_ENVIRONMENT = $CI_ENVIRONMENT
 #--------------------------------------------------------------------
 
 app.baseURL = '$BASE_URL'
+app.sentryDSN = '$SENTRY_DSN'
 # app.forceGlobalSecureRequests = false
 
 # app.sessionDriver = 'CodeIgniter\Session\Handlers\FileHandler'
