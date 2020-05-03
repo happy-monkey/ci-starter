@@ -19,6 +19,13 @@ sass: ## Generate CSS files from SCSS files
 
 assets: yarn sass ## Update yarn dependencies and generate CSS from SCSS files
 
+# Composer
+composer-install: ## Run composer install
+	docker exec -ti ${CONTAINER_NAME} sh -c "composer install --optimize-autoloader"
+
+composer-update: ## Run composer update
+	docker exec -ti ${CONTAINER_NAME} sh -c "composer update --optimize-autoloader"
+
 # Database
 migration-generate: ## Generate migration from current database
 	docker exec -ti ${CONTAINER_NAME} sh -c "vendor/bin/phinx-migrations generate --overwrite"
