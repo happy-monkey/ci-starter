@@ -37,6 +37,7 @@ Launch project
 _App URL : http://localhost:8080_  
 _phpMyAdmin URL : http://localhost:8001_
 ```
+make install
 make up
 ```
 
