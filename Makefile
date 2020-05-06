@@ -12,19 +12,40 @@ help:
 
 # Assets
 yarn: ## Update yarn dependencies
-	docker run --rm -e FONTAWESOME_NPM_AUTH_TOKEN --volume $(PWD):/usr/src/app -w /usr/src/app happymonkey/node-sass /bin/sh -c 'yarn install'
+	docker run --rm -e FONTAWESOME_NPM_AUTH_TOKEN \
+		--volume $(PWD):/usr/src/app \
+		-w /usr/src/app \
+		happymonkey/node-sass /bin/sh \
+		-c 'yarn install'
 
 sass: ## Generate CSS files from SCSS files
-	docker run --rm --volume $(PWD):/usr/src/app -w /usr/src/app happymonkey/node-sass /bin/sh -c 'sass --load-path=public/vendor --style=compressed public/assets/scss/:public/assets/css/'
+	docker run --rm \
+		--volume $(PWD):/usr/src/app \
+		-w /usr/src/app \
+		happymonkey/node-sass /bin/sh \
+		-c 'sass --load-path=public/vendor --style=compressed public/assets/scss/:public/assets/css/'
 
 assets: yarn sass ## Update yarn dependencies and generate CSS from SCSS files
 
+# Composer
+composer-install: ## Run composer install
+	docker run --rm --interactive --tty \
+      --volume $(PWD):/app \
+      composer install --ignore-platform-reqs --no-scripts
+
+composer-update: ## Run composer update
+	docker run --rm --interactive --tty \
+      --volume $(PWD):/app \
+      composer update --ignore-platform-reqs --no-scripts
+
 # Database
 migration-generate: ## Generate migration from current database
-	docker exec -ti ${CONTAINER_NAME} sh -c "vendor/bin/phinx-migrations generate --overwrite"
+	docker exec -ti ${CONTAINER_NAME} \
+		sh -c "vendor/bin/phinx-migrations generate --overwrite"
 
 migration-migrate: ## Apply migrations
-	docker exec -ti ${CONTAINER_NAME} sh -c "vendor/bin/phinx-migrations migrate"
+	docker exec -ti ${CONTAINER_NAME} \
+		sh -c "vendor/bin/phinx-migrations migrate"
 
 # Docker
 prepare:
@@ -39,10 +60,12 @@ up: prepare ## Run server from docker-compose.yml
 kill: ## Kill running server
 	docker stop `docker ps -a -q --filter name=${PROJECT_DIR}`
 
-exec: ## Open shell into app container
+down: kill
+
+exec:
 	docker exec -it ${CONTAINER_NAME} /bin/bash
 
-# Project
-run: yarn up ## Prepare assets and run server
+restart: kill up ## Restart running server
 
-restart: kill run ## Restart running server
+# Project
+install: assets composer-install
