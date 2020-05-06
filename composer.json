@@ -20,5 +20,10 @@
     },
     "require-dev": {
         "odan/phinx-migrations-generator": "^4.6"
+    },
+    "scripts": {
+        "post-create-project-cmd": [
+            "git init && git add . && git commit -m \"Initial commit\""
+        ]
     }
 }
