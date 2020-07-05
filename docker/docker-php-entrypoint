@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# Wait for Mysql connection
+until nc -z -v -w30 $MYSQL_HOST $MYSQL_PORT
+do
+    echo "Waiting for mysql connection..."
+    sleep 5
+done
+
 # Fix chmod file
 find $PROJECT_DIR -type d -exec chmod 0775 '{}' \;
 

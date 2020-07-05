@@ -32,12 +32,14 @@ services:
       MYSQL_DATABASE: app
       MYSQL_USER: user
       MYSQL_PASSWORD: pwd
+      MYSQL_PORT: 3306
     stdin_open: true
     tty: true
     volumes:
       - ./:/usr/src/app
     ports:
       - 9000:9000
+      - 8282:8282
     depends_on:
       - database
     links:
