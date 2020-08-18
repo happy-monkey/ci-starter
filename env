@@ -54,6 +54,7 @@ database.default.hostname = $MYSQL_HOST
 database.default.database = $MYSQL_DATABASE
 database.default.username = $MYSQL_USER
 database.default.password = $MYSQL_PASSWORD
+database.default.port = $MYSQL_PORT
 database.default.DBDriver = MySQLi
 
 # database.tests.hostname = localhost
