@@ -4,7 +4,7 @@ name: "Build Project"
 steps:
   - name: assets
     pull: always
-    image: registry.hub.docker.com/happymonkey/node-sass:latest
+    image: happymonkey/node-sass:latest
     environment:
       FONTAWESOME_NPM_AUTH_TOKEN:
         from_secret: fontawesome_npm_auth_token
