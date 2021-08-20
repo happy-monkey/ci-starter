@@ -13,7 +13,7 @@ services:
 
   database:
     image: mariadb:10.5.8
-    command: ['--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+    command: ['--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci', '--sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION']
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: app
@@ -33,6 +33,11 @@ services:
       MYSQL_USER: user
       MYSQL_PASSWORD: pwd
       MYSQL_PORT: 3306
+      EMAIL_HOST: mailhog
+      EMAIL_USER:
+      EMAIL_PASSWORD:
+      EMAIL_SECURE: 0
+      EMAIL_PORT: 1025
     stdin_open: true
     tty: true
     volumes:
@@ -72,3 +77,8 @@ services:
       - database
     links:
       - database
+
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - 8025:8025
