@@ -2,6 +2,7 @@
 
 use App\Filters\SentryFilter;
 use CodeIgniter\Config\BaseConfig;
+use Fluent\Cors\Filters\CorsFilter;
 
 class Filters extends BaseConfig
 {
@@ -11,17 +12,20 @@ class Filters extends BaseConfig
 		'csrf'     => \CodeIgniter\Filters\CSRF::class,
 		'toolbar'  => \CodeIgniter\Filters\DebugToolbar::class,
 		'honeypot' => \CodeIgniter\Filters\Honeypot::class,
+        'cors'     => CorsFilter::class,
         'sentry'   => SentryFilter::class,
 	];
 
 	// Always applied before every request
 	public $globals = [
 		'before' => [
+		    'cors',
 		    'sentry',
 			//'honeypot'
 			// 'csrf',
 		],
 		'after'  => [
+		    'cors',
 			'toolbar',
 			//'honeypot'
 		],
