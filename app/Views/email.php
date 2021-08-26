@@ -1,11 +1,4 @@
-<?php
-if ( !isset($color_light) )
-    $color_light = '#f6f6f6';
-if ( !isset($color_primary) )
-    $color_primary = '#3498db';
-if ( !isset($pre_header) )
-    $pre_header = '';
-?><!doctype html>
+<!doctype html>
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />

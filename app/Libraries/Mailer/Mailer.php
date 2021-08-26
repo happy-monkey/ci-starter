@@ -2,10 +2,12 @@
 
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
 
 class Mailer
 {
+    static $defaultLightColor   = '#f6f6f6';
+    static $defaultPrimaryColor = '#3498db';
+
     /**
      * @var PHPMailer
      */
@@ -36,7 +38,11 @@ class Mailer
 
         if ( file_exists($template ) )
         {
-            $this->email->Body = view($this->body, $this->args);
+            $this->email->Body = view($this->body, array_merge([
+                'color_light'   => self::$defaultLightColor,
+                'color_primary' => self::$defaultPrimaryColor,
+                'pre_header'    => '',
+            ], $this->args));
         }
         else
         {
