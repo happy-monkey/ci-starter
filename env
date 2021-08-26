@@ -47,6 +47,18 @@ app.sentryDSN = '$SENTRY_DSN'
 # app.CSPEnabled = false
 
 #--------------------------------------------------------------------
+# EMAIL
+#--------------------------------------------------------------------
+
+email.fromEmail = '$EMAIL_FROM'
+email.fromName = '$EMAIL_FROM_NAME'
+email.SMTPHost = '$EMAIL_HOST'
+email.SMTPUser = '$EMAIL_USER'
+email.SMTPPass = '$EMAIL_PASSWORD'
+email.SMTPPort = '$EMAIL_PORT'
+email.SMTPCrypto = '$EMAIL_SECURE'
+
+#--------------------------------------------------------------------
 # DATABASE
 #--------------------------------------------------------------------
 

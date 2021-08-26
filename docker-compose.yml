@@ -4,7 +4,7 @@ services:
   sass:
     image: happymonkey/node-sass:latest
     working_dir: /usr/src/app
-    command: ['-c', 'sass --watch --load-path=public/vendor --style=compressed public/assets/scss/:public/assets/css']
+    command: ['-c', 'sass --watch --load-path=public/vendor --style=compressed --error-css public/assets/scss/:public/assets/css']
     volumes:
       - ./:/usr/src/app
     stdin_open: true
@@ -33,10 +33,12 @@ services:
       MYSQL_USER: user
       MYSQL_PASSWORD: pwd
       MYSQL_PORT: 3306
+      EMAIL_FROM: noreply@mkey.dev
+      EMAIL_FROM_NAME: Happy Monkey
       EMAIL_HOST: mailhog
       EMAIL_USER:
       EMAIL_PASSWORD:
-      EMAIL_SECURE: 0
+      EMAIL_SECURE:
       EMAIL_PORT: 1025
     stdin_open: true
     tty: true
