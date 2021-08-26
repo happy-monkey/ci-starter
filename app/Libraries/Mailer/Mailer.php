@@ -137,7 +137,6 @@ class Mailer
 
                 return $result;
             } catch ( \Exception $exception ) {
-                echo $exception->getMessage(); die();
             }
         }
 
