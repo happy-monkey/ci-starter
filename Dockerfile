@@ -6,6 +6,7 @@ COPY --from=composer /usr/bin/composer /usr/bin/composer
 COPY docker/env_secrets_expand /usr/local/bin/
 COPY docker/docker-php-entrypoint /usr/local/bin/
 COPY docker/init.sh /usr/local/bin/
+COPY docker/crons/ /usr/src/crontab.d/
 
 RUN chmod +x /usr/local/bin/env_secrets_expand
 RUN chmod +x /usr/local/bin/docker-php-entrypoint

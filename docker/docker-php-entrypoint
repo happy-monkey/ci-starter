@@ -26,6 +26,10 @@ envsubst < $PROJECT_DIR/env > $PROJECT_DIR/.env
 # Apply migrations
 $PROJECT_DIR/vendor/bin/phinx-migrations migrate
 
+# Cron
+cat /usr/src/crontab.d/*.cron | crontab -
+service cron restart
+
 # Custom init
 source /usr/local/bin/init.sh
 
