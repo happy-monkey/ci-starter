@@ -18,14 +18,11 @@ steps:
     volumes:
       - name: dockersock
         path: /var/run/docker.sock
+      - name: dockerfolder
+        path: /root/.docker/
     environment:
-      DOCKER_LOGIN:
-        from_secret: docker_login
       DOCKER_REPO: template
     commands:
-      - sleep 10
-      - mkdir ~/.docker
-      - echo $DOCKER_LOGIN > ~/.docker/config.json
       - export TAG_NAME=$(echo $DRONE_BRANCH | cut -d'/' -f 2)
       - docker build -f Dockerfile -t happymonkey/$DOCKER_REPO:$TAG_NAME .
       - docker push happymonkey/$DOCKER_REPO:$TAG_NAME
@@ -44,3 +41,6 @@ volumes:
   - name: dockersock
     host:
       path: /var/run/docker.sock
+  - name: dockerfolder
+    host:
+      path: /root/.docker/
