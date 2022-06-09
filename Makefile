@@ -48,14 +48,11 @@ migration-migrate: ## Apply migrations
 		sh -c "vendor/bin/phinx-migrations migrate"
 
 # Docker
-prepare:
-	rm -f .env
+build: ## Build docker image from Dockerfile
+	cd docker && docker-compose build
 
-build: prepare ## Build docker image from Dockerfile
-	docker-compose build
-
-up: prepare ## Run server from docker-compose.yml
-	docker-compose up --force-recreate
+up: ## Run server from docker-compose.yml
+	cd docker && docker-compose up --force-recreate
 
 kill: ## Kill running server
 	docker stop `docker ps -a -q --filter name=${PROJECT_DIR}`

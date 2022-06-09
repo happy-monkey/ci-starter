@@ -3,10 +3,10 @@ version: '2'
 services:
   sass:
     image: happymonkey/node-sass:latest
-    working_dir: /usr/src/app
+    working_dir: /var/www/html
     command: ['-c', 'sass --watch --load-path=public/vendor --style=compressed --error-css public/assets/scss/:public/assets/css']
     volumes:
-      - ./:/usr/src/app
+      - ../:/usr/src/app
     stdin_open: true
     tty: true
     entrypoint: /bin/sh
@@ -24,7 +24,8 @@ services:
 
   app:
     build:
-      context: .
+      context: ..
+      dockerfile: Dockerfile
     environment:
       CI_ENVIRONMENT: development
       BASE_URL: http://localhost:8080
@@ -43,27 +44,13 @@ services:
     stdin_open: true
     tty: true
     volumes:
-      - ./:/usr/src/app
+      - ../:/var/www/html
     ports:
-      - 9000:9000
-      - 8282:8282
+      - '8080:80'
     depends_on:
       - database
     links:
       - database
-
-  nginx:
-    image: happymonkey/nginx-php
-    stdin_open: true
-    tty: true
-    volumes_from:
-      - app
-    ports:
-      - 8080:80
-    depends_on:
-      - app
-    links:
-      - app
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
@@ -72,7 +59,7 @@ services:
       PMA_USER: user
       PMA_PASSWORD: pwd
     ports:
-      - 8001:80
+      - '8001:80'
     volumes:
       - /sessions
     depends_on:
@@ -83,4 +70,4 @@ services:
   mailhog:
     image: mailhog/mailhog
     ports:
-      - 8025:8025
+      - '8025:8025'
