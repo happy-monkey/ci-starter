@@ -1,5 +1,6 @@
 PROJECT_DIR=$(shell basename $(CURDIR))
-CONTAINER_NAME=${PROJECT_DIR}_app_1
+PROJECT_NAME=${PROJECT_DIR}
+CONTAINER_NAME=${PROJECT_DIR}-app
 
 ifndef FONTAWESOME_NPM_AUTH_TOKEN
 	$(error FONTAWESOME_NPM_AUTH_TOKEN is not set)
@@ -49,15 +50,16 @@ migration-migrate: ## Apply migrations
 
 # Docker
 build: ## Build docker image from Dockerfile
-	cd docker && docker-compose build
+	docker compose --project-directory docker --project-name ${PROJECT_NAME} build
 
-up: ## Run server from docker-compose.yml
-	cd docker && docker-compose up --force-recreate
+up: ## Run server from ./docker/docker-compose.yml
+	docker compose --project-directory docker --project-name ${PROJECT_NAME} up
+
+down:
+	docker compose --project-directory docker --project-name ${PROJECT_NAME} down
 
 kill: ## Kill running server
 	docker stop `docker ps -a -q --filter name=${PROJECT_DIR}`
-
-down: kill
 
 exec:
 	docker exec -it ${CONTAINER_NAME} /bin/bash

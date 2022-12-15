@@ -1,8 +1,9 @@
-FROM happymonkey/php-nginx:8.0
+FROM happymonkey/php-nginx:8.1
 
 # Start init scripts #
 COPY docker/docker-php-entrypoint /usr/local/bin/
 COPY docker/init.sh /usr/local/bin/
+COPY docker/crons/ /usr/src/crontab.d/
 
 RUN chmod +x /usr/local/bin/docker-php-entrypoint
 RUN chmod +x /usr/local/bin/init.sh
@@ -20,7 +21,10 @@ RUN cd $PROJECT_DIR && composer install --optimize-autoloader && rm -rf /root/.c
 COPY ./ $PROJECT_DIR
 RUN chown -R www-data:www-data $PROJECT_DIR
 
+# Nginx
+COPY ./docker/nginx/*.conf /etc/nginx/conf.d/
+
 WORKDIR $PROJECT_DIR
-VOLUME $PROJECT_DIR
+# VOLUME $PROJECT_DIR
 
 RUN chmod -R 0777 writable

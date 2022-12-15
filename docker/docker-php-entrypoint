@@ -20,6 +20,10 @@ chmod -R 777 $WRITABLE_DIR
 # Prepare env file
 envsubst < $PROJECT_DIR/env > $PROJECT_DIR/.env
 
+# Cron
+cat /usr/src/crontab.d/*.cron | crontab -
+service cron restart
+
 # Custom init
 source /usr/local/bin/init.sh
 

@@ -2,16 +2,18 @@ version: '2'
 
 services:
   sass:
+    container_name: ${COMPOSE_PROJECT_NAME}-sass
     image: happymonkey/node-sass:latest
-    working_dir: /var/www/html
+    working_dir: /var/www/app
     command: ['-c', 'sass --watch --load-path=public/vendor --style=compressed --error-css public/assets/scss/:public/assets/css']
     volumes:
-      - ../:/usr/src/app
+      - ./:/var/www/app
     stdin_open: true
     tty: true
     entrypoint: /bin/sh
 
   database:
+    container_name: ${COMPOSE_PROJECT_NAME}-db
     image: mariadb:10.5.8
     command: ['--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci', '--sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION']
     environment:
@@ -23,6 +25,7 @@ services:
     tty: true
 
   app:
+    container_name: ${COMPOSE_PROJECT_NAME}-app
     build:
       context: ..
       dockerfile: Dockerfile
@@ -44,7 +47,7 @@ services:
     stdin_open: true
     tty: true
     volumes:
-      - ../:/var/www/html
+      - ../:/var/www/app
     ports:
       - '8080:80'
     depends_on:
@@ -53,6 +56,7 @@ services:
       - database
 
   phpmyadmin:
+    container_name: ${COMPOSE_PROJECT_NAME}-pma
     image: phpmyadmin/phpmyadmin:latest
     environment:
       PMA_HOST: database
@@ -68,6 +72,7 @@ services:
       - database
 
   mailhog:
+    container_name: ${COMPOSE_PROJECT_NAME}-mailhog
     image: mailhog/mailhog
     ports:
       - '8025:8025'
