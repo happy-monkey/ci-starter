@@ -1,10 +1,7 @@
 PROJECT_DIR=$(shell basename $(CURDIR))
 PROJECT_NAME=${PROJECT_DIR}
 CONTAINER_NAME=${PROJECT_DIR}-app
-
-ifndef FONTAWESOME_NPM_AUTH_TOKEN
-	$(error FONTAWESOME_NPM_AUTH_TOKEN is not set)
-endif
+FONTAWESOME_NPM_AUTH_TOKEN?=$(shell bash -c 'read -p "FONTAWESOME_NPM_AUTH_TOKEN: " token; echo $$token')
 
 .PHONY: help
 
@@ -13,7 +10,7 @@ help:
 
 # Assets
 yarn: ## Update yarn dependencies
-	docker run --rm -e FONTAWESOME_NPM_AUTH_TOKEN \
+	docker run --rm --env FONTAWESOME_NPM_AUTH_TOKEN=$(FONTAWESOME_NPM_AUTH_TOKEN) \
 		--volume $(PWD):/usr/src/app \
 		-w /usr/src/app \
 		happymonkey/node-sass /bin/sh \
@@ -39,14 +36,20 @@ composer-update: ## Run composer update
       --volume $(PWD):/app \
       composer update --ignore-platform-reqs --no-scripts
 
-# Database
-migration-generate: ## Generate migration from current database
-	docker exec -ti ${CONTAINER_NAME} \
-		sh -c "vendor/bin/phinx-migrations generate --overwrite"
+composer-require:
+	docker run --rm --interactive --tty \
+      --volume $(PWD):/app \
+      composer require $(shell bash -c 'read -p "Package name: " package; echo $$package') --ignore-platform-reqs --no-scripts
 
-migration-migrate: ## Apply migrations
-	docker exec -ti ${CONTAINER_NAME} \
-		sh -c "vendor/bin/phinx-migrations migrate"
+composer-remove:
+	docker run --rm --interactive --tty \
+      --volume $(PWD):/app \
+      composer remove $(shell bash -c 'read -p "Package name: " package; echo $$package') --ignore-platform-reqs --no-scripts
+
+composer-info:
+	docker run --rm --interactive --tty \
+      --volume $(PWD):/app \
+      composer show -t
 
 # Docker
 build: ## Build docker image from Dockerfile
@@ -67,4 +70,4 @@ exec:
 restart: kill up ## Restart running server
 
 # Project
-install: assets composer-install
+init: assets build composer-install
