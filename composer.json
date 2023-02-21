@@ -15,7 +15,6 @@
         "codeigniter4/translations": "@rc",
         "robmorgan/phinx": "^0.11.4",
         "firebase/php-jwt": "^5.2",
-        "sngrl/php-firebase-cloud-messaging": "dev-master",
         "phpmailer/phpmailer": "^6.1",
         "agungsugiarto/codeigniter4-cors": "^2.0"
     },

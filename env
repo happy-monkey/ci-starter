@@ -21,7 +21,7 @@ CI_ENVIRONMENT = $CI_ENVIRONMENT
 #--------------------------------------------------------------------
 
 app.baseURL = '$BASE_URL'
-# app.forceGlobalSecureRequests = false
+app.forceGlobalSecureRequests = $FORCE_HTTPS
 
 # app.sessionDriver = 'CodeIgniter\Session\Handlers\FileHandler'
 # app.sessionCookieName = 'ci_session'

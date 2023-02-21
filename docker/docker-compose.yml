@@ -18,9 +18,9 @@ services:
     command: ['--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci', '--sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION']
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: app
-      MYSQL_USER: user
-      MYSQL_PASSWORD: pwd
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     stdin_open: true
     tty: true
 
@@ -31,12 +31,13 @@ services:
       dockerfile: Dockerfile
     environment:
       CI_ENVIRONMENT: development
+      FORCE_HTTPS: false
       BASE_URL: http://localhost:8080
-      MYSQL_HOST: database
-      MYSQL_DATABASE: app
-      MYSQL_USER: user
-      MYSQL_PASSWORD: pwd
-      MYSQL_PORT: 3306
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_PORT: ${MYSQL_PORT}
       EMAIL_FROM: noreply@mkey.dev
       EMAIL_FROM_NAME: Happy Monkey
       EMAIL_HOST: mailhog
@@ -59,9 +60,10 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}-pma
     image: phpmyadmin/phpmyadmin:latest
     environment:
-      PMA_HOST: database
-      PMA_USER: user
-      PMA_PASSWORD: pwd
+      PMA_HOST: ${MYSQL_HOST}:${MYSQL_PORT}
+      PMA_USER: ${MYSQL_USER}
+      PMA_PASSWORD: ${MYSQL_PASSWORD}
+      UPLOAD_LIMIT: ${PMA_UPLOAD_LIMIT}
     ports:
       - '8001:80'
     volumes:
